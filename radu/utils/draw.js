@@ -7,7 +7,7 @@ function clear() {
    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
 
-function drawArrow(tip, tail = { x: 0, y: 0 }, color = "white", size = 20) {
+function arrow(tip, tail = { x: 0, y: 0 }, color = "white", size = 20) {
    ctx.save();
    const { dir, mag } = toPolar(subtract(tip, tail));
    const v1 = { dir: dir + Math.PI * 0.8, mag: size / 2 };
@@ -37,7 +37,38 @@ function drawArrow(tip, tail = { x: 0, y: 0 }, color = "white", size = 20) {
 // https://youtu.be/xK3vKWMFVgw
 // https://youtu.be/fEq-edH2iYE
 
-function drawDot(pos, label) {
+
+function circle(pos, radius, label) {
+   ctx.save();
+   ctx.beginPath();
+   ctx.fillStyle = "white";
+   ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+   ctx.fill();
+   ctx.font = "20px Arial";
+   ctx.textBaseline = "hanging";
+   ctx.textAlign = "center";
+   ctx.fillText(label, pos.x - 10, pos.y + 6);
+   ctx.restore();
+}
+
+function box(pos, width, height, label) {
+   ctx.save();
+   ctx.beginPath();
+   ctx.strokeStyle = "white";
+   //ctx.fillStyle = "white";
+   ctx.rect(pos.x, pos.y, width, height);
+   ctx.stroke();
+   //ctx.fill();
+   if (label) {
+      ctx.font = "20px Arial";
+      ctx.textBaseline = "hanging";
+      ctx.textAlign = "center";
+      ctx.fillText(label, pos.x - 10, pos.y + 6);
+   }
+   ctx.restore();
+}
+
+function dot(pos, label) {
    ctx.save();
    ctx.beginPath();
    ctx.fillStyle = "white";
@@ -50,7 +81,7 @@ function drawDot(pos, label) {
    ctx.restore();
 }
 
-function drawSegment(A, B) {
+function segment(A, B) {
    ctx.save();
    ctx.beginPath();
    ctx.strokeStyle = "yellow";
@@ -61,7 +92,7 @@ function drawSegment(A, B) {
    ctx.restore();
 }
 
-function drawText(text, { x = 10, y = 10 } = {}) {
+function text(text, { x = 10, y = 10 } = {}) {
    ctx.save();
    ctx.textBaseline = "hanging";
    ctx.textAlign = "left";
