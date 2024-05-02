@@ -9,4 +9,6 @@ const B = {
 }
 
 drawDot(A, "A");
-drawDot(A, "A");
+drawDot(B, "B");
+
+drawSegment(A, B);
