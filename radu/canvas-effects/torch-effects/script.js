@@ -50,19 +50,36 @@ function animateTorchEffect(){
             center.x+=locs[i].x;
             center.y+=locs[i].y;
         }
+
         center.x/=locs.length;
         center.y/=locs.length;
+
+
+        // TEST CODE
+        // ctx.save();
+        // ctx.fillStyle = "green";
+        // ctx.arc(center.x, center.y, 50, 0, Math.PI * 2);
+        // ctx.fill();
+        // ctx.restore();
         
-        let rad=Math.sqrt(canvas.width*canvas.width+
-                canvas.height*canvas.height);
-        rad+=Math.random()*0.1*rad;
+        let rad =Math.sqrt(
+            canvas.width * canvas.width + canvas.height*canvas.height);
         
+        rad += Math.random()*0.1*rad;
+        
+        // const grd=ctx.createRadialGradient(
+        //   center.x,center.y, 0,
+        //   center.x,center.y, 50
+        // )
+      
+
         const grd=ctx.createRadialGradient(
             center.x,center.y,rad*0.05,
             center.x,center.y,rad*0.2
         )
-        grd.addColorStop(0,"rgba(0,0,0,0)");
-        grd.addColorStop(1,"rgba(0,0,0,0.8)");
+        
+        grd.addColorStop(0,"rgba(0,0,0,0)"); // full transparent black
+        grd.addColorStop(1,"rgba(0,0,0,0.8)"); // semi transparent black
 
         ctx.fillStyle=grd;
         ctx.arc(center.x,center.y,rad,0,Math.PI*2);
