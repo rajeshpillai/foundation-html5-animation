@@ -1,0 +1,33 @@
+
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>Spider Web Effect</title>
+    </head>
+    <body>
+        <h2 style="color:yellow">Click on the color on the canvas!</h2>
+        <canvas id="myCanvas"></canvas>
+        <script>
+            const canvas=document.getElementById("myCanvas");
+            const ctx=canvas.getContext("2d");
+            let wse=null;
+            let DEBUG=false;
+
+            navigator.mediaDevices.getUserMedia({video:true})
+                .then(function(rawData){
+                    const video=document.createElement("video");
+                    video.srcObject=rawData;
+                    video.play();
+                    video.onloadeddata=function(){
+                        canvas.width=video.videoWidth;
+                        canvas.height=video.videoHeight;
+                        wse=new WebShooterEffect(canvas,video);
+                        document.addEventListener('mousedown', (e) => wse.updateColor(e));
+                        wse.animate();
+                    }
+                }).catch(function(err){alert(err)})
+        </script>
+        <script src="web-shooter.js"></script>
+        <script src="utils.js"></script>
+    </body>
+</html>
