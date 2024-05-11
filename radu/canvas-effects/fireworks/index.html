@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<head>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <canvas id="myCanvas"></canvas>
+   <script>
+
+const myVideo=document.createElement("video");
+
+navigator.mediaDevices.getUserMedia(
+   {video:true}
+).then(function(rawData){
+   myVideo.srcObject=rawData;
+   myVideo.play();
+   myVideo.onloadeddata=function(){
+      myCanvas.width=myVideo.videoWidth;
+      myCanvas.height=myVideo.videoHeight;
+      new Effect(myCanvas,myVideo);
+   }
+}).catch(function(err){alert(err)});
+
+   </script>
+   <script type="text/javascript" src="particle.js"></script>
+   <script type="text/javascript" src="utils.js"></script>
+   <script type="text/javascript" src="effect.js"></script>
+</body>
+</html>
