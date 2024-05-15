@@ -37,12 +37,31 @@ class Vector {
     return new Vector(this.x*n, this.y*n);
   }
 
+  // Returns a vector with same direction and 1 length
+  unit() {
+    if (this.magnitude() === 0) {
+      return new Vector(0,0);
+    } else {
+      return new Vector(this.x/this.magnitude(), this.y/this.magnitude());
+    }
+  }
+
+  // Returns a perpendicular normal vector
+  normal() {
+    return new Vector(-this.y, this.x).unit();
+  }
+
   drawVec(start_x, start_y, n, color) {
     ctx.beginPath();
     ctx.moveTo(start_x, start_y);
     ctx.lineTo(start_x + this.x * n, start_y + this.y * n);
     ctx.strokeStyle = color;
     ctx.stroke();
+    ctx.closePath();
+  }
+  // returns the length of a vector projection onto the other one
+  static dot(v1, v2){
+    return v1.x*v2.x + v1.y*v2.y;
   }
 }
 
@@ -68,8 +87,15 @@ class Ball {
   }
 
   display() {
-    this.vel.drawVec(this.x, this.y, 10, "blue");
-    this.acc.drawVec(this.x, this.y, 100, "green");
+    // this.vel.drawVec(this.x, this.y, 10, "blue");
+    // this.acc.drawVec(this.x, this.y, 100, "green");
+    this.vel.drawVec(550, 300, 10, "green");
+    this.acc.unit().drawVec(550, 300, 50, "blue");
+    ctx.beginPath();
+    ctx.arc(550, 300, 50, 0, 2*Math.PI);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+    ctx.closePath();
   }
 }
 
