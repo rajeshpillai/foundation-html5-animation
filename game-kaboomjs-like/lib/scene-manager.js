@@ -25,7 +25,6 @@ class SceneManager {
   }
 
   render(ctx) {
-    console.log("currentScene: ", this.currentScene);
     if (this.currentScene && this.currentScene.render) {
         console.log("Drawing scene...", this.currentSceneName);
         this.currentScene.render(ctx);

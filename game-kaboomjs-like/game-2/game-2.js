@@ -30,6 +30,15 @@ class Hurdle {
         ctx.fillStyle = 'red';
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
+
+    getBounds() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height
+        };
+    }
 }
 
 const sceneManager = new SceneManager();
@@ -54,9 +63,9 @@ const gameScene = {
     init() {
         this.player = new AnimatedSprite(
             '../assets/warrior/Run.png',
-            50, canvas.height - 160,
-            120, 120,
-            120, 120,
+            50, canvas.height - 80,
+            160, 160,
+            160, 160,
             8,
             100
         );
@@ -70,7 +79,7 @@ const gameScene = {
         this.player.update(deltaTime);
         for (const hurdle of this.hurdles) {
             hurdle.update(deltaTime);
-            if (this.checkCollision(this.player, hurdle)) {
+            if (this.checkCollision(this.player.getBounds(), hurdle.getBounds())) {
                 sceneManager.switchTo('gameOver');
             }
         }
@@ -78,10 +87,11 @@ const gameScene = {
     render(ctx) {
         console.log("rendering player....");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        this.player.draw(ctx);
         for (const hurdle of this.hurdles) {
             hurdle.draw(ctx);
         }
+        this.player.draw(ctx);
+        
     },
     checkCollision(player, hurdle) {
         return player.x < hurdle.x + hurdle.width &&
@@ -114,7 +124,6 @@ sceneManager.switchTo('loading');
 let lastTime = 0;
 
 function gameLoop(timestamp) {
-    console.log("Game loop...", timestamp);
     //ctx.clearRect(0,0,canvas.width, canvas.height);
     const deltaTime = timestamp - lastTime;
     lastTime = timestamp;

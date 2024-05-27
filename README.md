@@ -6,5 +6,6 @@ Learning JS animation from one of the greatest book
 TODOS:
 
 Game kaboomjs in progress 
-- [x] Basic engine
-- [ ] Check collision detection
+- [X] Basic engine
+- [X] Check collision detection
+- [ ] Check sprite width/height scaling

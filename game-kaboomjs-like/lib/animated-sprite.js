@@ -1,11 +1,11 @@
 class AnimatedSprite {
-    constructor(imageSrc, x, y, width, height, frameWidth, frameHeight, frameCount, frameSpeed) {
+    constructor(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed) {
         this.image = new Image();
         this.image.src = imageSrc;
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.boxWidth = boxWidth; // Box width to fit sprite
+        this.boxHeight = boxHeight; // Box height to fit sprite
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.frameCount = frameCount;
@@ -17,15 +17,9 @@ class AnimatedSprite {
         this.gravity = 0.5;
         this.jumpStrength = -10;
         this.onGround = false;
-
-        this.image.onload = () => {
-            console.log('Image loaded');
-            //sceneManager.switchTo('loading');
-        };
     }
 
     update(deltaTime) {
-        console.log("Player updating...", this.x);
         this.frameTimer += deltaTime;
         if (this.frameTimer > this.frameSpeed) {
             this.frameTimer = 0;
@@ -50,23 +44,45 @@ class AnimatedSprite {
         this.x += this.vx;
         this.y += this.vy;
 
-        if (this.y + this.height > canvas.height) {
-            this.y = canvas.height - this.height;
+        if (this.y + this.boxHeight > canvas.height) {
+            this.y = canvas.height - this.boxHeight;
             this.vy = 0;
             this.onGround = true;
         }
     }
 
     draw(ctx) {
-        console.log("Player drawing...", this.x);
         const frameX = (this.currentFrame % this.frameCount) * this.frameWidth;
         const frameY = 0; // Single row sprite sheet
-        ctx.rect(this.x, this.y, this.width, this.height);
+
+        // Calculate the scale factor to fit the sprite proportionately within the box
+        const scaleWidth = this.boxWidth / this.frameWidth;
+        const scaleHeight = this.boxHeight / this.frameHeight;
+        const scale = Math.min(scaleWidth, scaleHeight);
+
+        // Calculate the new width and height based on the scale
+        this.newWidth = this.frameWidth * scale;
+        this.newHeight = this.frameHeight * scale;
+
+        // Center the sprite within the box
+        this.drawX = this.x + (this.boxWidth - this.newWidth) / 2;
+        this.drawY = this.y + (this.boxHeight - this.newHeight) / 2;
+
+        ctx.rect(this.drawX, this.drawY, this.newWidth, this.newHeight);
         ctx.stroke();
         ctx.drawImage(
             this.image,
             frameX, frameY, this.frameWidth, this.frameHeight, // Source rectangle
-            this.x, this.y, this.width, this.height // Destination rectangle
+            this.drawX, this.drawY, this.newWidth, this.newHeight // Destination rectangle
         );
+    }
+
+    getBounds() {
+        return {
+            x: this.drawX,
+            y: this.drawY,
+            width: this.newWidth,
+            height: this.newHeight
+        };
     }
 }
