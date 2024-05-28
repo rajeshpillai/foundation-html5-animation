@@ -4,6 +4,10 @@ class Sprite {
       this.image.src = imageSrc;
       this.x = x;
       this.y = y;
+      this.vx = 0;
+      this.vy = 0;
+      this.gravity = 0;
+        
       this.boxWidth = boxWidth; // Box width to fit sprite
       this.boxHeight = boxHeight; // Box height to fit sprite
       this.image.onload = () => {

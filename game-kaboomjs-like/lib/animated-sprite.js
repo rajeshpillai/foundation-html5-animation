@@ -4,19 +4,12 @@ class AnimatedSprite extends Sprite{
         super(imageSrc, x, y, boxWidth, boxHeight);
         this.image = new Image();
         this.image.src = imageSrc;
-        this.x = x;
-        this.y = y;
-        this.boxWidth = boxWidth; // Box width to fit sprite
-        this.boxHeight = boxHeight; // Box height to fit sprite
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.frameCount = frameCount;
         this.frameSpeed = frameSpeed;
         this.currentFrame = 0;
         this.frameTimer = 0;
-        this.vx = 0;
-        this.vy = 0;
-        this.gravity = 0;
         this.jumpStrength = -10;
         this.onGround = false;
     }

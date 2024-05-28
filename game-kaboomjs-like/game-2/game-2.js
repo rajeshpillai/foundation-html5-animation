@@ -107,7 +107,7 @@ const gameScene = {
         this.player = new Player(
             '../assets/warrior/Run.png',
             50, canvas.height - 80,
-            160, 160,
+            100, 100,
             160, 160,
             8,
             100
