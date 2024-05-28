@@ -2,6 +2,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 const keys = {};
+let gamePaused = false;
 
 window.addEventListener('keydown', (e) => {
     keys[e.key] = true;
@@ -76,6 +77,7 @@ const gameScene = {
     },
     update(deltaTime) {
         console.log("in gameScene....");
+        if (gamePaused) return;
         this.player.update(deltaTime);
         for (const hurdle of this.hurdles) {
             hurdle.update(deltaTime);
@@ -127,6 +129,16 @@ function gameLoop(timestamp) {
     //ctx.clearRect(0,0,canvas.width, canvas.height);
     const deltaTime = timestamp - lastTime;
     lastTime = timestamp;
+
+     // Pause and Resume logic
+     if (keys['p']) {
+        gamePaused = true;
+        keys['p'] = false;
+    }
+    if (keys['r']) {
+        gamePaused = false;
+        keys['r'] = false;
+    }
 
     sceneManager.update(deltaTime);
     sceneManager.render(ctx);
