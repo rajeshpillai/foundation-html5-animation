@@ -1,5 +1,7 @@
-class AnimatedSprite {
+class AnimatedSprite extends Sprite{
     constructor(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed) {
+        //imageSrc, x, y, boxWidth, boxHeight
+        super(imageSrc, x, y, boxWidth, boxHeight);
         this.image = new Image();
         this.image.src = imageSrc;
         this.x = x;
@@ -14,7 +16,7 @@ class AnimatedSprite {
         this.frameTimer = 0;
         this.vx = 0;
         this.vy = 0;
-        this.gravity = 0.5;
+        this.gravity = 0;
         this.jumpStrength = -10;
         this.onGround = false;
     }
@@ -24,30 +26,6 @@ class AnimatedSprite {
         if (this.frameTimer > this.frameSpeed) {
             this.frameTimer = 0;
             this.currentFrame = (this.currentFrame + 1) % this.frameCount;
-        }
-
-        if (keys['ArrowRight']) {
-            this.vx = 2;
-        } else if (keys['ArrowLeft']) {
-            this.vx = -2;
-        } else {
-            this.vx = 0;
-        }
-
-        if (keys[' '] && this.onGround) {
-            this.vy = this.jumpStrength;
-            this.onGround = false;
-        }
-
-        this.vy += this.gravity;
-
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.y + this.boxHeight > canvas.height) {
-            this.y = canvas.height - this.boxHeight;
-            this.vy = 0;
-            this.onGround = true;
         }
     }
 

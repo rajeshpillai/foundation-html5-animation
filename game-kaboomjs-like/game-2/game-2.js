@@ -12,8 +12,9 @@ window.addEventListener('keyup', (e) => {
     keys[e.key] = false;
 });
 
-class Hurdle {
+class Hurdle extends Sprite{
     constructor(x, y, width, height) {
+        super(null, x, y, width, height);
         this.x = x;
         this.y = y;
         this.width = width;
@@ -42,6 +43,47 @@ class Hurdle {
     }
 }
 
+class Player extends AnimatedSprite {
+    constructor(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed) {
+        super(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed);
+        this.vx = 0;
+        this.vy = 0;
+        this.gravity = 0.5;
+        this.jumpStrength = -10;
+        this.onGround = false;
+    }
+
+    update(deltaTime) {
+        super.update(deltaTime);
+
+        if (keys['ArrowRight']) {
+            this.vx = 2;
+        } else if (keys['ArrowLeft']) {
+            this.vx = -2;
+        } else {
+            this.vx = 0;
+        }
+
+        if (keys[' '] && this.onGround) {
+            this.vy = this.jumpStrength;
+            this.onGround = false;
+        }
+
+        this.vy += this.gravity;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.y + this.boxHeight > canvas.height) {
+            this.y = canvas.height - this.boxHeight;
+            this.vy = 0;
+            this.onGround = true;
+        }
+    }
+}
+
+
+
 const sceneManager = new SceneManager();
 
 const loadingScene = {
@@ -62,7 +104,7 @@ const loadingScene = {
 
 const gameScene = {
     init() {
-        this.player = new AnimatedSprite(
+        this.player = new Player(
             '../assets/warrior/Run.png',
             50, canvas.height - 80,
             160, 160,
