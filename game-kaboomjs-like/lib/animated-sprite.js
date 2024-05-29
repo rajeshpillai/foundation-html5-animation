@@ -11,7 +11,7 @@ class AnimatedSprite extends Sprite{
         this.currentFrame = 0;
         this.frameTimer = 0;
         this.jumpStrength = -10;
-        this.onGround = false;
+        this.onGround = true;
     }
 
     update(deltaTime) {

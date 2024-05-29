@@ -43,13 +43,13 @@ class Hurdle extends Sprite{
     }
 }
 
-class Player extends AnimatedSprite {
+class Player extends Sprite {
     constructor(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed) {
-        super(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed);
+        super(imageSrc, x, y, boxWidth, boxHeight); //, frameWidth, frameHeight, frameCount, frameSpeed);
         this.vx = 0;
         this.vy = 0;
         this.gravity = 0.5;
-        this.jumpStrength = -10;
+        this.jumpStrength = -15;
         this.onGround = false;
     }
 
@@ -63,17 +63,17 @@ class Player extends AnimatedSprite {
         } else {
             this.vx = 0;
         }
-
+        
         if (keys[' '] && this.onGround) {
             this.vy = this.jumpStrength;
             this.onGround = false;
         }
 
         this.vy += this.gravity;
-
         this.x += this.vx;
         this.y += this.vy;
 
+        // Prevent falling through the floor
         if (this.y + this.boxHeight > canvas.height) {
             this.y = canvas.height - this.boxHeight;
             this.vy = 0;
@@ -81,7 +81,6 @@ class Player extends AnimatedSprite {
         }
     }
 }
-
 
 
 const sceneManager = new SceneManager();
@@ -105,16 +104,17 @@ const loadingScene = {
 const gameScene = {
     init() {
         this.player = new Player(
-            '../assets/warrior/Run.png',
+            '../assets/warrior/birdy.png',
             50, canvas.height - 80,
-            100, 100,
-            160, 160,
+            60, 60,
+            60, 60,
             8,
             100
         );
         this.hurdles = [
             new Hurdle(600, canvas.height - 80, 40, 40),
-            new Hurdle(900, canvas.height - 80, 40, 40)
+            new Hurdle(900, canvas.height - 80, 40, 40),
+            new Hurdle(1200, canvas.height - 80, 40, 40)
         ];
     },
     update(deltaTime) {
@@ -129,6 +129,8 @@ const gameScene = {
         }
     },
     render(ctx) {
+        if (gamePaused) return;
+        
         console.log("rendering player....");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (const hurdle of this.hurdles) {
@@ -181,6 +183,7 @@ function gameLoop(timestamp) {
         gamePaused = false;
         keys['r'] = false;
     }
+
 
     sceneManager.update(deltaTime);
     sceneManager.render(ctx);

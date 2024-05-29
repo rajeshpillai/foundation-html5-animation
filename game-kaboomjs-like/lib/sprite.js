@@ -7,9 +7,11 @@ class Sprite {
       this.vx = 0;
       this.vy = 0;
       this.gravity = 0;
-        
+      this.jumpStrength = -10;
+      this.onGround = true;
       this.boxWidth = boxWidth; // Box width to fit sprite
       this.boxHeight = boxHeight; // Box height to fit sprite
+      
       this.image.onload = () => {
           this.loaded = true;
           this.updateScale();
@@ -31,8 +33,13 @@ class Sprite {
       this.drawY = this.y + (this.boxHeight - this.newHeight) / 2;
   }
 
+  update(deltaTime) {
+    this.updateScale();    
+  }
+
   draw(ctx) {
       if (this.loaded) {
+          console.log(`drawX = ${this.drawX}, drawY = ${this.drawY}`);
           ctx.drawImage(
               this.image,
               this.drawX, this.drawY, this.newWidth, this.newHeight
