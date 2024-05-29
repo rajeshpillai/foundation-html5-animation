@@ -43,9 +43,9 @@ class Hurdle extends Sprite{
     }
 }
 
-class Player extends Sprite {
+class Player extends AnimatedSpriteSheet {
     constructor(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed) {
-        super(imageSrc, x, y, boxWidth, boxHeight); //, frameWidth, frameHeight, frameCount, frameSpeed);
+        super(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed);
         this.vx = 0;
         this.vy = 0;
         this.gravity = 0.5;
@@ -104,10 +104,10 @@ const loadingScene = {
 const gameScene = {
     init() {
         this.player = new Player(
-            '../assets/warrior/birdy.png',
-            50, canvas.height - 80,
-            60, 60,
-            60, 60,
+            '../assets/warrior/Run.png',
+            50, canvas.height - 160,
+            160, 160,
+            160, 160,
             8,
             100
         );
@@ -140,6 +140,8 @@ const gameScene = {
         for (const hurdle of this.hurdles) {
             hurdle.draw(ctx);
         }
+
+        console.log("Drawing player...");
         this.player.draw(ctx);
 
         // Draw particles

@@ -10,5 +10,6 @@ Game kaboomjs in progress
 - [X] Check collision detection
 - [X] Pause 'p' or Resume 'r' game
 - [X] Base Sprite class
+- [X] Create AnimatedSpriteSheet class (The AnimatedSprite class will be deprecated)
 - [X] Particle effect on player collide with hurdle (simple)
 - [ ] Check sprite width/height scaling
