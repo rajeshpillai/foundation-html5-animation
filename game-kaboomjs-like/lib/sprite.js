@@ -29,8 +29,8 @@ class Sprite {
       this.newHeight = this.image.height * this.scale;
 
       // Center the sprite within the box
-      this.drawX = this.x + (this.boxWidth - this.newWidth) / 2;
-      this.drawY = this.y + (this.boxHeight - this.newHeight) / 2;
+      this.drawX = this.x; //this.x + (this.boxWidth - this.newWidth) / 2;
+      this.drawY = this.y; //this.y + (this.boxHeight - this.newHeight) / 2;
   }
 
   update(deltaTime) {

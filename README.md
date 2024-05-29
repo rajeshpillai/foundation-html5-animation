@@ -12,4 +12,4 @@ Game kaboomjs in progress
 - [X] Base Sprite class
 - [X] Create AnimatedSpriteSheet class (The AnimatedSprite class will be deprecated)
 - [X] Particle effect on player collide with hurdle (simple)
-- [ ] Check sprite width/height scaling
+- [ ] Check sprite width/height scaling (AnimatedSprite pending width/height)

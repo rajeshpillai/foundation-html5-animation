@@ -22,7 +22,7 @@ class Hurdle extends Sprite{
     }
 
     update(deltaTime) {
-        this.x -= 2; // Move hurdle to the left
+        this.x -= 4; // Move hurdle to the left
         if (this.x + this.width < 0) {
             this.x = canvas.width;
         }
@@ -43,7 +43,7 @@ class Hurdle extends Sprite{
     }
 }
 
-class Player extends AnimatedSpriteSheet {
+class Player extends Sprite {
     constructor(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed) {
         super(imageSrc, x, y, boxWidth, boxHeight, frameWidth, frameHeight, frameCount, frameSpeed);
         this.vx = 0;
@@ -104,17 +104,17 @@ const loadingScene = {
 const gameScene = {
     init() {
         this.player = new Player(
-            '../assets/warrior/Run.png',
-            50, canvas.height - 160,
-            160, 160,
-            160, 160,
-            8,
-            100
+            '../assets/warrior/birdy.png',
+            50, canvas.height-80,    // x, y postion on canvas
+            60, 60,                   // Box width and height to fit the sprite
+            160, 111,                   // Frame width and height
+            8,                          // # of frames
+            100                         // Animation speed (m/s per frame)
         );
         this.hurdles = [
-            new Hurdle(600, canvas.height - 80, 40, 40),
-            new Hurdle(900, canvas.height - 80, 40, 40),
-            new Hurdle(1200, canvas.height - 80, 40, 40)
+            new Hurdle(600, canvas.height - 60, 40, 40),
+            new Hurdle(900, canvas.height - 60, 40, 40),
+            new Hurdle(1200, canvas.height - 60, 40, 40)
         ];
 
         this.particleSystem = new ParticleSystem();
@@ -125,7 +125,7 @@ const gameScene = {
         this.player.update(deltaTime);
         for (const hurdle of this.hurdles) {
             hurdle.update(deltaTime);
-            if (this.checkCollision(this.player.getBounds(), hurdle.getBounds())) {
+            if (this.player && this.checkCollision(this.player.getBounds(), hurdle.getBounds())) {
                 this.triggerParticles(hurdle.x, hurdle.y);
                 sceneManager.switchTo('gameOver');
             }
@@ -141,7 +141,7 @@ const gameScene = {
             hurdle.draw(ctx);
         }
 
-        console.log("Drawing player...");
+        console.log("Drawing player...", this.player);
         this.player.draw(ctx);
 
         // Draw particles
@@ -150,6 +150,7 @@ const gameScene = {
     },
 
     checkCollision(player, hurdle) {
+        console.log("Detecting collision between: ", player, hurdle);
         return player.x < hurdle.x + hurdle.width &&
                player.x + player.width > hurdle.x &&
                player.y < hurdle.y + hurdle.height &&
