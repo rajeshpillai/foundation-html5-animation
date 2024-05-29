@@ -116,35 +116,53 @@ const gameScene = {
             new Hurdle(900, canvas.height - 80, 40, 40),
             new Hurdle(1200, canvas.height - 80, 40, 40)
         ];
+
+        this.particleSystem = new ParticleSystem();
     },
+
     update(deltaTime) {
-        console.log("in gameScene....");
         if (gamePaused) return;
         this.player.update(deltaTime);
         for (const hurdle of this.hurdles) {
             hurdle.update(deltaTime);
             if (this.checkCollision(this.player.getBounds(), hurdle.getBounds())) {
+                this.triggerParticles(hurdle.x, hurdle.y);
                 sceneManager.switchTo('gameOver');
             }
         }
+        // Update particles
+        this.particleSystem.update(deltaTime);
     },
     render(ctx) {
         if (gamePaused) return;
         
-        console.log("rendering player....");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (const hurdle of this.hurdles) {
             hurdle.draw(ctx);
         }
         this.player.draw(ctx);
+
+        // Draw particles
+        this.particleSystem.draw(ctx);
         
     },
+
     checkCollision(player, hurdle) {
         return player.x < hurdle.x + hurdle.width &&
                player.x + player.width > hurdle.x &&
                player.y < hurdle.y + hurdle.height &&
                player.y + player.height > hurdle.y;
-    }
+    },
+
+    triggerParticles(x, y) {
+        for (let i = 0; i < 20; i++) { // Number of particles
+            const vx = (Math.random() - 0.5) * 0.2; // Random horizontal velocity
+            const vy = (Math.random() - 0.5) * 0.2; // Random vertical velocity
+            const life = 1000; // Particle life in milliseconds
+            const color = 'rgba(255, 255, 255, 0.7)'; // Particle color
+            this.particleSystem.addParticle(new Particle(x, y, vx, vy, life, color));
+        }
+    },  
 };
 
 const gameOverScene = {
@@ -154,11 +172,16 @@ const gameOverScene = {
         if (keys['Enter']) {
             sceneManager.switchTo('game');
         }
+
+        // Update particles
+        gameScene.particleSystem.update(deltaTime);
     },
     render(ctx) {
         ctx.fillStyle = 'white';
         ctx.font = '30px Arial';
         ctx.fillText('Game Over! Press Enter to Restart', 150, 200);
+
+        gameScene.particleSystem.draw(ctx);
     }
 };
 
